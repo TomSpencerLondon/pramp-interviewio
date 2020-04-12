@@ -2,24 +2,25 @@ package com.codurance.practice;
 
 public class RootOfNumber {
     public double root(double input, int n) {
-        double guess;
-        double lowerBound = 0;
-        double upperBound = input;
-        double approxRoot = (upperBound + lowerBound) / 2;
+        return rootHelper(input, n, 0, input);
+    }
 
+
+    private double rootHelper(double input, int n, double lowerBound, double upperBound){
+        double guess;
+        double approxRoot = (lowerBound + upperBound) / 2;
         guess = approxRoot;
 
-        while(guess - lowerBound >= 0.001){
-            if (Math.pow(guess, n) > input){
-                upperBound = guess;
-            }else if(Math.pow(guess, n) < input){
-                lowerBound = guess;
-            }else{
-                break;
-            }
-            guess = (upperBound + lowerBound) / 2;
-        }
 
-        return (double)Math.round(guess * 1000d) / 1000d;
+        if (guess - lowerBound <= 0.001){
+            return (double)Math.round(guess * 1000d) / 1000d;
+        }
+        if (Math.pow(guess, n) > input){
+            return rootHelper(input, n, lowerBound, (upperBound + lowerBound) / 2);
+        }else if (Math.pow(guess, n) < input){
+            return rootHelper(input, n, (lowerBound + upperBound) / 2, upperBound);
+        }else{
+            return rootHelper(input, n, lowerBound, upperBound);
+        }
     }
 }
